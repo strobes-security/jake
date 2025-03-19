@@ -39,8 +39,8 @@ var regexPatterns = map[string]*regexp.Regexp{
 	"tiktok":    regexp.MustCompile(`https?://(?:www\.)?tiktok\.com/@([a-zA-Z0-9_\-]+)`),
 }
 
-func checkTwitterHandleAvailability(handle string) bool {
-	url := "https://x.com/" + handle
+
+func checkHandleAvailability(url string) bool {
 	resp, err := http.Get(url)
 	if err == nil {
 		defer resp.Body.Close()
@@ -51,17 +51,53 @@ func checkTwitterHandleAvailability(handle string) bool {
 	return false
 }
 
+func checkTwitterHandleAvailability(handle string) bool {
+	return checkHandleAvailability("https://x.com/" + handle)
+}
+
+func checkLinkedInHandleAvailability(handle string) bool {
+	return checkHandleAvailability("https://www.linkedin.com/in/" + handle)
+}
+
+func checkYouTubeHandleAvailability(handle string) bool {
+	// Check in multiple formats if needed
+	return checkHandleAvailability("https://www.youtube.com/c/" + handle)
+}
+
+func checkFacebookHandleAvailability(handle string) bool {
+	return checkHandleAvailability("https://www.facebook.com/" + handle)
+}
+
+func checkInstagramHandleAvailability(handle string) bool {
+	return checkHandleAvailability("https://www.instagram.com/" + handle)
+}
+
+func checkTikTokHandleAvailability(handle string) bool {
+	return checkHandleAvailability("https://www.tiktok.com/@" + handle)
+}
+
 func findHandles(content string) []HandleResult {
 	var found []HandleResult
 	for platform, regex := range regexPatterns {
 		matches := regex.FindAllStringSubmatch(content, -1)
 		for _, m := range matches {
 			handle := m[1]
-			if platform == "twitter" {
-				found = append(found, HandleResult{Platform: platform, Handle: handle, Hijackable: checkTwitterHandleAvailability(handle)})
-			} else {
-				found = append(found, HandleResult{Platform: platform, Handle: handle, Hijackable: false})
+			hijackable := false
+			switch platform {
+			case "twitter":
+				hijackable = checkTwitterHandleAvailability(handle)
+			case "linkedin":
+				hijackable = checkLinkedInHandleAvailability(handle)
+			case "youtube":
+				hijackable = checkYouTubeHandleAvailability(handle)
+			case "facebook":
+				hijackable = checkFacebookHandleAvailability(handle)
+			case "instagram":
+				hijackable = checkInstagramHandleAvailability(handle)
+			case "tiktok":
+				hijackable = checkTikTokHandleAvailability(handle)
 			}
+			found = append(found, HandleResult{Platform: platform, Handle: handle, Hijackable: hijackable})
 		}
 	}
 	return found
