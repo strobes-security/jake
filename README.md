@@ -1,4 +1,4 @@
-# Jake - Handle Hijack Checker
+# Jake - Social Media Hijack
 
 A fast and concurrent CLI tool by **Strobes Security** to scan web pages and their common subpages for social media handles (Twitter, LinkedIn, YouTube, Facebook, Instagram, TikTok) and detect potentially hijackable Twitter handles.
 
@@ -28,6 +28,11 @@ go build jake.go
 
 This will download and install the binary to your `$GOPATH/bin` or `$HOME/go/bin`.
 
+Or install using `go install`
+
+```bash
+go install github.com/strobes-security/jake@latest
+```
 ---
 
 ## 🔎 Usage
