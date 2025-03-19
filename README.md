@@ -4,6 +4,9 @@ A fast and concurrent CLI tool by **Strobes Security** to scan web pages and the
 
 ---
 
+<img width="1056" alt="image" src="https://github.com/user-attachments/assets/715a6b9f-3055-4456-a4a1-b7f3ed7f69ff" />
+---
+
 ## ✨ Features
 - Scans main URLs and common sub-pages (like `/contact`, `/about-us`, `/team`, etc.)
 - Detects social media handles via regex
@@ -20,7 +23,7 @@ Make sure you have **Go** installed.
 Then, run:
 
 ```bash
-go install github.com/strobes-security/jake@latest
+go build jake.go
 ```
 
 This will download and install the binary to your `$GOPATH/bin` or `$HOME/go/bin`.
